@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Modal, Button } from 'antd';
+import "antd/dist/antd.css";
+import ModalExamination from './modal_examination';
+const App = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-function App() {
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+      }}>
+        <h3>Вы не подтвердили свой статус врача</h3>
+        <p>Чтобы подтверидть его нужно пройти <a onClick={() => showModal()}>тест</a></p>
+      </div>
+      <ModalExamination/>
+    </>
   );
-}
+};
+
+
 
 export default App;
