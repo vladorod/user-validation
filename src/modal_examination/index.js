@@ -114,9 +114,7 @@ const TestBlock = ({ title, answers, correctAnswer, last  }) => {
     setExaminationSettings({ ...examinationSettings, ...update })
   }, [answerRate])
 
-  useEffect(() => {
-    console.log('examinationSettings', examinationSettings.answers)
-  }, [examinationSettings])
+ 
 
 
 
@@ -220,18 +218,26 @@ export default function ModalExamination(props) {
 
   const getResult = () => {
     const rates = Object.values(examinationSettings.answers);
-    const endRate = rates.reduce((a, b) => a + b);
- 
+    const endRate = rates.length > 1 && rates.reduce((a, b) => a + b);
+
     if (endRate === total) {
       setSliders([SuccessBlock])
       EventBus.$emit("TestSuccess", [endRate, endRate === total]);
     } else {
       setSliders([ErrorBlock])
-      EventBus.$emit("TestError", [endRate, endRate === total]);
+      if (sliders.length > 1) {
+        EventBus.$emit("TestError", [endRate, endRate === total]);
+      }
     }
     timer.time
       .stop();
-    EventBus.$emit("TestFinish", [endRate, endRate === total]);
+
+    if(!endRate) {
+      sliders.length > 1 && EventBus.$emit("TestFinish", [0, 0 === total]);
+    } else {
+      sliders.length > 1 && EventBus.$emit("TestFinish", [endRate, endRate === total]);
+    }
+
     setTimer({...timer, ...{current: null}});
     setExaminationSettings({answers: []});
     return endRate === total;
