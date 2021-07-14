@@ -181,7 +181,9 @@ const ErrorBlock = () => {
   return (
     <Wrap>
       <img src={SVGError} style={iconStyle} />
-      <Text>При прохождении теста Вы допустили ошибки. Пожалуйста <a onClick={() => startTest()}>пройдите тест повторно</a></Text>
+      <Text>При прохождении теста Вы допустили ошибки. Пожалуйста <a onClick={() => {
+        startTest()
+        }}>пройдите тест повторно</a></Text>
     </Wrap>
   )
 }
@@ -294,7 +296,7 @@ export default function ModalExamination(props) {
     <MainContext.Provider value={store}>
       <Modal
         onCancel={() => {
-          getResult();
+          page !== 0 && getResult();
           props.onClose && props.onClose();
         }}
         visible={props.visible && props.visible}
